@@ -195,3 +195,7 @@ foreach(HDR ${HDRS})
       include/${INSTALL_DIR}
   )
 endforeach()
+
+catkin_install_python(PROGRAMS scripts/imu_convert.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
