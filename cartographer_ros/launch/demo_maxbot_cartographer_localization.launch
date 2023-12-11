@@ -23,6 +23,8 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
 
+  <node pkg="cartographer_ros" name="imu_convert" type="imu_convert.py" output="screen" />
+
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
