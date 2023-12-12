@@ -1,5 +1,3 @@
 https://drive.google.com/drive/folders/17I7Bv0sz8sl5hfN5QFuFL_5EmyeahE09?usp=drive_link
 
-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
-
-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
+rosrun cartographer_ros cartographer_pbstream_to_ros_map –map_filestem=/home/ubuntu/mymap –pbstream_filename=/home/ubuntu/mymap.pbstream –resolution=0.05
