@@ -74,4 +74,35 @@ TRAJECTORY_BUILDER_2D.use_imu_data = true
 -- -- POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e5 -- 1e5
 
 
+-----------------------------husky-----------------------------
+MAP_BUILDER.use_trajectory_builder_2d = true
+
+TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1
+
+TRAJECTORY_BUILDER_2D.min_range = 0.3
+TRAJECTORY_BUILDER_2D.missing_data_ray_length = 2.
+TRAJECTORY_BUILDER_2D.use_imu_data = true
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 10
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 15
+
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.angular_search_window = math.rad(15.)
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.linear_search_window = 3.
+
+POSE_GRAPH.optimization_problem.huber_scale = 1e2
+
+-----------------TUNE THESE PARAMETERS FOR LOW LATENCY-------------------------------
+
+------------Global SLAM------------
+POSE_GRAPH.optimize_every_n_nodes = 100 -- Decrease
+POSE_GRAPH.global_sampling_ratio = 0.003 -- Decrease
+POSE_GRAPH.constraint_builder.sampling_ratio = 0.4 -- Decrease
+POSE_GRAPH.constraint_builder.min_score = 0.85 -- Increase
+POSE_GRAPH.global_constraint_search_after_n_seconds = 30 -- Increase
+
+---------Global/Local SLAM---------
+TRAJECTORY_BUILDER_2D.submaps.num_range_data = 100 -- Decrease
+TRAJECTORY_BUILDER_2D.max_range = 10. -- Decrease
+
+-------------------------------------------------------------------------------------
+
 return options
