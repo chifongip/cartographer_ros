@@ -26,7 +26,8 @@
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
-          -configuration_basename maxbot_2d.lua"
+          -configuration_basename maxbot_2d.lua
+          -load_state_filename /home/ubuntu/cartographer_ws/src/cartographer_ros/maps/office/mymap.pbstream"
       output="screen">
     <remap from="imu" to="imu" />
     <remap from="scan" to="scan" />
