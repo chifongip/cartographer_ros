@@ -47,8 +47,8 @@ MAP_BUILDER.use_trajectory_builder_2d = true
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1 -- 1
 
 TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35 -- 35
-TRAJECTORY_BUILDER_2D.min_range = 0.3 -- 0.3
-TRAJECTORY_BUILDER_2D.max_range = 8. -- 8, maximum 25
+TRAJECTORY_BUILDER_2D.min_range = 0.1 -- 0.3
+TRAJECTORY_BUILDER_2D.max_range = 25. -- 8, maximum 25
 
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 1.
 TRAJECTORY_BUILDER_2D.use_imu_data = true
@@ -56,12 +56,12 @@ TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.1
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.translation_delta_cost_weight = 10. 
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.rotation_delta_cost_weight = 1e-1
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 11 -- 1
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 0.9 -- 2
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 0.5 -- 3
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 10. -- 1
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 5. -- 10
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 20. -- 40
 
 POSE_GRAPH.optimization_problem.huber_scale = 1e2
-POSE_GRAPH.optimize_every_n_nodes = 35 -- 35
+POSE_GRAPH.optimize_every_n_nodes = 70 -- 35
 -- POSE_GRAPH.global_sampling_ratio = 0.002 -- 0.003
 -- POSE_GRAPH.constraint_builder.sampling_ratio = 0.25 -- 0.3
 -- POSE_GRAPH.constraint_builder.max_constraint_distance = 25 
