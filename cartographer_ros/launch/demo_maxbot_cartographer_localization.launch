@@ -29,7 +29,7 @@
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename maxbot_2d_localization.lua
-          -load_state_filename /home/ubuntu/cartographer_ws/src/cartographer_ros/maps/mymap.pbstream"
+          -load_state_filename /home/ubuntu/cartographer_ws/src/cartographer_ros/maps/corridor/mymap.pbstream"
       output="screen">
     <remap from="imu" to="imu" />
     <remap from="scan" to="scan" />
@@ -40,4 +40,5 @@
 
   <node name="rviz" pkg="rviz" type="rviz" required="true"
       args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz" />
+  
 </launch>
