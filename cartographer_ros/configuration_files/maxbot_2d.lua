@@ -44,6 +44,9 @@ options = {
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
+
+MAP_BUILDER.num_background_threads = 4
+
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1 -- 1
 
 TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35 -- 35
