@@ -20,9 +20,9 @@ options = {
   trajectory_builder = TRAJECTORY_BUILDER,
   map_frame = "map",
   tracking_frame = "imu_link",
-  published_frame = "base_link",
+  published_frame = "odom", -- base_link
   odom_frame = "odom",
-  provide_odom_frame = true,
+  provide_odom_frame = false, --true
   publish_frame_projected_to_2d = false,
   use_pose_extrapolator = true,
   use_odometry = true,
@@ -44,10 +44,13 @@ options = {
 }
 
 MAP_BUILDER.use_trajectory_builder_2d = true
+
+MAP_BUILDER.num_background_threads = 4
+
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1 -- 1
 
 TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35 -- 35
-TRAJECTORY_BUILDER_2D.min_range = 0.3 -- 0.3
+TRAJECTORY_BUILDER_2D.min_range = 0.1 -- 0.3
 TRAJECTORY_BUILDER_2D.max_range = 8. -- 8, maximum 25
 
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 1.
@@ -56,9 +59,9 @@ TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.linear_search_window = 0.1
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.translation_delta_cost_weight = 10. 
 TRAJECTORY_BUILDER_2D.real_time_correlative_scan_matcher.rotation_delta_cost_weight = 1e-1
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 11 -- 1
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 0.9 -- 2
--- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 0.5 -- 3
+-- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 10. -- 1
+-- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 5. -- 10
+-- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 20. -- 40
 
 POSE_GRAPH.optimization_problem.huber_scale = 1e2
 POSE_GRAPH.optimize_every_n_nodes = 35 -- 35
@@ -73,5 +76,36 @@ POSE_GRAPH.constraint_builder.min_score = 0.65 -- 0.65
 -- POSE_GRAPH.optimization_problem.odometry_translation_weight = 1e5 -- 1e5
 -- POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e5 -- 1e5
 
+
+-- -----------------------------husky-----------------------------
+-- MAP_BUILDER.use_trajectory_builder_2d = true
+
+-- TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1
+
+-- TRAJECTORY_BUILDER_2D.min_range = 0.3
+-- TRAJECTORY_BUILDER_2D.missing_data_ray_length = 2.
+-- TRAJECTORY_BUILDER_2D.use_imu_data = true
+-- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 10
+-- TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 15
+
+-- POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.angular_search_window = math.rad(15.)
+-- POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.linear_search_window = 3.
+
+-- POSE_GRAPH.optimization_problem.huber_scale = 1e2
+
+-- -----------------TUNE THESE PARAMETERS FOR LOW LATENCY-------------------------------
+
+-- ------------Global SLAM------------
+-- POSE_GRAPH.optimize_every_n_nodes = 100 -- Decrease
+-- POSE_GRAPH.global_sampling_ratio = 0.003 -- Decrease
+-- POSE_GRAPH.constraint_builder.sampling_ratio = 0.4 -- Decrease
+-- POSE_GRAPH.constraint_builder.min_score = 0.85 -- Increase
+-- POSE_GRAPH.global_constraint_search_after_n_seconds = 30 -- Increase
+
+-- ---------Global/Local SLAM---------
+-- TRAJECTORY_BUILDER_2D.submaps.num_range_data = 100 -- Decrease
+-- TRAJECTORY_BUILDER_2D.max_range = 10. -- Decrease
+
+-- -------------------------------------------------------------------------------------
 
 return options
