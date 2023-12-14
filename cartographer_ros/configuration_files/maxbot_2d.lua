@@ -27,7 +27,7 @@ options = {
   use_pose_extrapolator = true,
   use_odometry = true,
   use_nav_sat = false,
-  use_landmarks = false,
+  use_landmarks = true,
   num_laser_scans = 1,
   num_multi_echo_laser_scans = 0,
   num_subdivisions_per_laser_scan = 1,
@@ -46,6 +46,8 @@ options = {
 MAP_BUILDER.use_trajectory_builder_2d = true
 
 MAP_BUILDER.num_background_threads = 4
+
+TRAJECTORY_BUILDER.collate_landmarks = true
 
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1 -- 1
 
