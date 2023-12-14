@@ -196,6 +196,6 @@ foreach(HDR ${HDRS})
   )
 endforeach()
 
-catkin_install_python(PROGRAMS scripts/imu_convert.py
+catkin_install_python(PROGRAMS scripts/imu_convert.py scripts/apriltag_landmark.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
