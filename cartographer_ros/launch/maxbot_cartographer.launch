@@ -23,6 +23,8 @@
 
   <node pkg="cartographer_ros" name="imu_convert" type="imu_convert.py" output="screen" />
 
+  <node pkg="cartographer_ros" name="apriltag_landmark" type="apriltag_landmark.py" output="screen" />
+
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
