@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import rospy
-from tf import transformations
+import tf
+import numpy as np 
 
 from cartographer_ros_msgs.msg import LandmarkEntry, LandmarkList
-
 from apriltag_ros.msg import AprilTagDetectionArray
+from geometry_msgs.msg import PoseStamped, Pose
 
 
 def landmarkCallback(data):
@@ -17,14 +18,53 @@ def landmarkCallback(data):
     if not data.detections:
         landmark_pub.publish(landmark_data)
     else:
-        landmark_entry = LandmarkEntry()
-        landmark_entry.id = str(data.detections[0].id)
-        landmark_entry.tracking_from_landmark_transform.position = data.detections[0].pose.pose.pose.position
-        landmark_entry.tracking_from_landmark_transform.orientation = data.detections[0].pose.pose.pose.orientation
-        landmark_entry.translation_weight = 1.0
-        landmark_entry.rotation_weight = 1.0    
-        landmark_data.landmarks.append(landmark_entry)
+        for i in range(len(data.detections)):
+            landmark_entry = LandmarkEntry()
+            landmark_entry.id = str(data.detections[i].id)
+            landmark_entry.tracking_from_landmark_transform.position = data.detections[i].pose.pose.pose.position
+            landmark_entry.tracking_from_landmark_transform.orientation = data.detections[i].pose.pose.pose.orientation
+            landmark_entry.translation_weight = 1.0
+            landmark_entry.rotation_weight = 1.0    
+            landmark_data.landmarks.append(landmark_entry)
         landmark_pub.publish(landmark_data)
+
+
+    '''
+        convert tag w.r.t. base_link
+    '''
+    # base_link_tag_pub = rospy.Publisher('base_link_tag', PoseStamped, queue_size=10)
+    # tf_ros = tf.TransformerROS()
+
+    # base_link_tag_data = PoseStamped()
+    # base_link_tag_data.header.seq = data.header.seq
+    # base_link_tag_data.header.stamp = data.header.stamp
+    # base_link_tag_data.header.frame_id = "base_link"
+
+    # if not data.detections:
+    #     base_link_tag_pub.publish(base_link_tag_data)
+    # else:
+    #     print(len(data.detections))
+
+    #     usb_cam_link_tag_t = [data.detections[0].pose.pose.pose.position.x, data.detections[0].pose.pose.pose.position.y, data.detections[0].pose.pose.pose.position.z]
+    #     usb_cam_link_tag_R = [data.detections[0].pose.pose.pose.orientation.x, data.detections[0].pose.pose.pose.orientation.y, data.detections[0].pose.pose.pose.orientation.z, data.detections[0].pose.pose.pose.orientation.w]
+    #     usb_cam_link_tag_g = tf_ros.fromTranslationRotation(usb_cam_link_tag_t, usb_cam_link_tag_R)
+    #     base_link_usb_cam_link_g = tf_ros.fromTranslationRotation([0.220, 0.000, 0.118], [-0.500, 0.500, -0.500, 0.500])
+        
+    #     base_link_tag_g = np.matmul(base_link_usb_cam_link_g, usb_cam_link_tag_g)
+
+    #     base_link_tag_t = base_link_tag_g[:3, 3]
+    #     # base_link_tag_R = base_link_tag_g[:3, :3]
+    #     base_link_tag_q = tf.transformations.quaternion_from_matrix(base_link_tag_g)
+
+    #     base_link_tag_data.pose.position.x = base_link_tag_t[0]
+    #     base_link_tag_data.pose.position.y = base_link_tag_t[1]
+    #     base_link_tag_data.pose.position.z = base_link_tag_t[2]
+    #     base_link_tag_data.pose.orientation.x = base_link_tag_q[0]
+    #     base_link_tag_data.pose.orientation.y = base_link_tag_q[1]
+    #     base_link_tag_data.pose.orientation.z = base_link_tag_q[2]
+    #     base_link_tag_data.pose.orientation.w = base_link_tag_q[3]
+
+    #     base_link_tag_pub.publish(base_link_tag_data)
 
 
 def landmarkPublisher():
@@ -34,7 +74,8 @@ def landmarkPublisher():
 
     # rate = rospy.Rate(50)
 
-    rospy.loginfo("Getting landmark from apriltag and publish to Cartographer.")
+    # rospy.loginfo("Getting landmark from apriltag and publish to Cartographer.")
+    rospy.loginfo("Getting transformation from tag base_link.")
     
     rospy.spin()
 
