@@ -17,7 +17,7 @@ include "maxbot_2d.lua"
 TRAJECTORY_BUILDER.pure_localization_trimmer = {
   max_submaps_to_keep = 3,
 }
-POSE_GRAPH.optimize_every_n_nodes = 5
+POSE_GRAPH.optimize_every_n_nodes = 10
 
 -- MAP_BUILDER.num_background_threads = 4
 -- POSE_GRAPH.constraint_builder.sampling_ratio = 0.5 * POSE_GRAPH.constraint_builder.sampling_ratio
