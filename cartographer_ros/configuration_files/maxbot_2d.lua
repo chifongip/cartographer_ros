@@ -27,7 +27,7 @@ options = {
   use_pose_extrapolator = true,
   use_odometry = true,
   use_nav_sat = false,
-  use_landmarks = true,
+  use_landmarks = false,
   num_laser_scans = 1,
   num_multi_echo_laser_scans = 0,
   num_subdivisions_per_laser_scan = 1,
@@ -53,7 +53,7 @@ TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1 -- 1
 
 TRAJECTORY_BUILDER_2D.submaps.num_range_data = 35 -- 35
 TRAJECTORY_BUILDER_2D.min_range = 0.1 -- 0.3
-TRAJECTORY_BUILDER_2D.max_range = 8. -- 8, maximum 25
+TRAJECTORY_BUILDER_2D.max_range = 25. -- 8, maximum 25
 
 TRAJECTORY_BUILDER_2D.missing_data_ray_length = 1.
 TRAJECTORY_BUILDER_2D.use_imu_data = true
@@ -78,6 +78,11 @@ POSE_GRAPH.constraint_builder.min_score = 0.65 -- 0.65
 -- POSE_GRAPH.optimization_problem.odometry_translation_weight = 1e5 -- 1e5
 -- POSE_GRAPH.optimization_problem.odometry_rotation_weight = 1e5 -- 1e5
 
+POSE_GRAPH.overlapping_submaps_trimmer_2d = {
+  fresh_submaps_count = 1,
+  min_covered_area = 2,
+  min_added_submaps_count = 5,
+}
 
 -- -----------------------------husky-----------------------------
 -- MAP_BUILDER.use_trajectory_builder_2d = true
