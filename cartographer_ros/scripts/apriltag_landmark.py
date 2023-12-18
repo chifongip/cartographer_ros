@@ -95,8 +95,8 @@ def landmarkPublisher():
 
     # rate = rospy.Rate(50)
 
-    # rospy.loginfo("Getting landmark from apriltag and publish to Cartographer.")
-    rospy.loginfo("Getting transformation from tag base_link.")
+    rospy.loginfo("Getting landmark from apriltag and publish to Cartographer.")
+    # rospy.loginfo("Getting transformation from tag base_link.")
     
     rospy.spin()
 
