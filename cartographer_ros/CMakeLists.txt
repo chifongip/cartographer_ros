@@ -169,7 +169,7 @@ if (CATKIN_ENABLE_TESTING)
   endforeach()
 endif()
 
-install(DIRECTORY launch urdf configuration_files
+install(DIRECTORY launch urdf configuration_files config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
@@ -196,6 +196,6 @@ foreach(HDR ${HDRS})
   )
 endforeach()
 
-catkin_install_python(PROGRAMS scripts/imu_convert.py scripts/apriltag_landmark.py
+catkin_install_python(PROGRAMS scripts/imu_convert.py scripts/apriltag_landmark.py scripts/image_segmentation.py scripts/update_robot_pose.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
