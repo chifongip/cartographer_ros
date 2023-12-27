@@ -7,18 +7,9 @@ from apriltag_ros.msg import AprilTagDetectionArray
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseStamped, Pose
 
 
-def poseCallback(data):
-    tag_locations = rospy.get_param("update_robot_pose/tag_locations")    # get tag locations from yaml 
+tf_ros = tf.TransformerROS()
 
-    # listener = tf.TransformListener()
-    # listener.waitForTransform("map", "base_link", rospy.Time(0), rospy.Duration(3.0))
-    # (trans, rot) = listener.lookupTransform("map", "base_link", rospy.Time(0))
-    
-    tf_ros = tf.TransformerROS()
-
-    # if not data.detections:
-    #     map_base_link_pub.publish(map_base_link_data)
-    # else:
+def poseCallback(data): 
     if data.detections:
         map_base_link_pub = rospy.Publisher('initialpose', PoseWithCovarianceStamped, queue_size=10)
 
@@ -30,7 +21,7 @@ def poseCallback(data):
         # tag w.r.t. map
         tag_detected = []
         for i in range(len(data.detections)):
-            if data.detections[i].pose.pose.pose.position.z <= 2.0:
+            if data.detections[i].pose.pose.pose.position.z <= max_detection_dist:
                 tag_detected.append(data.detections[i])
         
         if tag_detected:
@@ -47,7 +38,7 @@ def poseCallback(data):
             usb_cam_link_tag_g = tf_ros.fromTranslationRotation(usb_cam_link_tag_t, usb_cam_link_tag_R)
 
             # usb_cam w.r.t. base_link
-            base_link_usb_cam_link_g = tf_ros.fromTranslationRotation([0.220, 0.000, 0.118], [-0.500, 0.500, -0.500, 0.500])
+            base_link_usb_cam_link_g = tf_ros.fromTranslationRotation(base_link_usb_cam_link_t, base_link_usb_cam_link_R)
 
             # calculation of base_link w.r.t. map
             tag_usb_cam_link_g = np.linalg.inv(usb_cam_link_tag_g)                  # usb_cam_link w.r.t. tag
@@ -72,7 +63,15 @@ def poseCallback(data):
 
 
 def posePublisher():
+    global tag_locations, max_detection_dist, base_link_usb_cam_link_t, base_link_usb_cam_link_R
+    tag_locations = rospy.get_param("update_robot_pose/tag_locations")    # get tag locations from yaml 
+    max_detection_dist = rospy.get_param("update_robot_pose/max_detection_dist")
+
     rospy.init_node('posePublisher', anonymous=True)
+
+    tf_listener = tf.TransformListener()
+    tf_listener.waitForTransform("base_link", "usb_cam_link", rospy.Time(0), rospy.Duration(1.0))
+    (base_link_usb_cam_link_t, base_link_usb_cam_link_R) = tf_listener.lookupTransform("base_link", "usb_cam_link", rospy.Time(0))
 
     rospy.Subscriber("tag_detections", AprilTagDetectionArray, poseCallback)
 

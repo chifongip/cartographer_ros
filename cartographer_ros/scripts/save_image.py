@@ -9,6 +9,8 @@ import time
 
 def image_callback(msg):
     global cv_image
+
+    bridge = CvBridge()
     try:
         cv_image = bridge.imgmsg_to_cv2(msg)
     except CvBridgeError as e:
@@ -16,19 +18,25 @@ def image_callback(msg):
 
 
 def imageRecorder():
+    global cv_image
+
     rospy.init_node('image_listener')
-    bridge = CvBridge()
-    image_topic = "/usb_cam/image_rect"
-    rospy.Subscriber(image_topic, Image, image_callback)
+    rospy.Subscriber("/usb_cam/image_rect", Image, image_callback)
+
     if not os.path.exists('img'):
         os.makedirs('img')
+
     count = 1
 
-    while(1):
+    rospy.loginfo("Starting image saver node.")
+    time.sleep(1)
+    
+    while not rospy.is_shutdown():
         filename = 'img/image{}.jpg'.format(count)
         cv2.imwrite(filename, cv_image)
         count += 1
-        time.sleep(3)
+        print("image saved.")
+        time.sleep(1)
 
     rospy.spin()
 
