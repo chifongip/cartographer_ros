@@ -8,9 +8,10 @@ from apriltag_ros.msg import AprilTagDetectionArray
 from geometry_msgs.msg import PoseStamped, Pose
 
 
+tf_ros = tf.TransformerROS()
+
 def landmarkCallback(data):
     landmark_pub = rospy.Publisher('landmark', LandmarkList, queue_size=10)
-    tf_ros = tf.TransformerROS()
 
     landmark_data = LandmarkList()
     landmark_data.header.seq = data.header.seq
@@ -93,16 +94,10 @@ def landmarkPublisher():
 
     rospy.Subscriber("tag_detections", AprilTagDetectionArray, landmarkCallback)
 
-    # rate = rospy.Rate(50)
-
     rospy.loginfo("Getting landmark from apriltag and publish to Cartographer.")
     # rospy.loginfo("Getting transformation from tag to base_link.")
     
     rospy.spin()
-
-    # while not rospy.is_shutdown():
-        # landmark_pub.publish(landmark_data)
-        # rate.sleep()
     
 
 if __name__ == '__main__':

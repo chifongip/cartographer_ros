@@ -18,14 +18,9 @@ def imuConvert():
 
     rospy.Subscriber("imu/data", Imu, imuCallback)
 
-    # rate = rospy.Rate(50)
-
     rospy.loginfo("Converting IMU angular velocity from deg/s to rad/s.")
     
     rospy.spin()
-    # while not rospy.is_shutdown():
-        # imu_pub.publish(imu_data)
-        # rate.sleep()
     
 
 if __name__ == '__main__':
