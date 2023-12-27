@@ -5,9 +5,16 @@ import numpy as np
 
 from apriltag_ros.msg import AprilTagDetectionArray
 from geometry_msgs.msg import PoseWithCovarianceStamped, PoseStamped, Pose
+from nav_msgs.msg import Odometry
 
 
 tf_ros = tf.TransformerROS()
+
+def odomCallback(data):
+    global curr_linear_vel_x, curr_angular_vel_z
+    curr_linear_vel_x = data.twist.twist.linear.x
+    curr_angular_vel_z = data.twist.twist.angular.z
+
 
 def poseCallback(data): 
     if data.detections:
@@ -21,10 +28,12 @@ def poseCallback(data):
         # tag w.r.t. map
         tag_detected = []
         for i in range(len(data.detections)):
-            if data.detections[i].pose.pose.pose.position.z <= max_detection_dist:
+            # distance between tag and base_link
+            if data.detections[i].pose.pose.pose.position.z <= max_detection_dist: 
                 tag_detected.append(data.detections[i])
         
-        if tag_detected:
+        # linear and angular velocity threshold for updating the robot's pose  
+        if tag_detected and curr_linear_vel_x <= max_linear_vel_x and curr_angular_vel_z <= max_angular_vel_z:
             tag_sorted = sorted(tag_detected, key=lambda tag_detected: tag_detected.pose.pose.pose.position.z)
 
             for tag in tag_locations:
@@ -63,17 +72,23 @@ def poseCallback(data):
 
 
 def posePublisher():
-    global tag_locations, max_detection_dist, base_link_usb_cam_link_t, base_link_usb_cam_link_R
+    global tag_locations, max_detection_dist, base_link_usb_cam_link_t, base_link_usb_cam_link_R, max_linear_vel_x, max_angular_vel_z
+    
     tag_locations = rospy.get_param("update_robot_pose/tag_locations")    # get tag locations from yaml 
     max_detection_dist = rospy.get_param("update_robot_pose/max_detection_dist")
+    max_linear_vel_x = rospy.get_param("update_robot_pose/max_linear_vel_x")
+    max_angular_vel_z = rospy.get_param("update_robot_pose/max_angular_vel")
 
     rospy.init_node('posePublisher', anonymous=True)
 
     tf_listener = tf.TransformListener()
+
+    # get transformation between base_link and usb_cam_link from tf_tree
     tf_listener.waitForTransform("base_link", "usb_cam_link", rospy.Time(0), rospy.Duration(1.0))
     (base_link_usb_cam_link_t, base_link_usb_cam_link_R) = tf_listener.lookupTransform("base_link", "usb_cam_link", rospy.Time(0))
 
     rospy.Subscriber("tag_detections", AprilTagDetectionArray, poseCallback)
+    rospy.Subscriber("odom", Odometry, odomCallback)
 
     rospy.loginfo("Getting transformation from base_link to map.")
     
