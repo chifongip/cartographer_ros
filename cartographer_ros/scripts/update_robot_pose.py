@@ -77,7 +77,7 @@ def posePublisher():
     tag_locations = rospy.get_param("update_robot_pose/tag_locations")    # get tag locations from yaml 
     max_detection_dist = rospy.get_param("update_robot_pose/max_detection_dist")
     max_linear_vel_x = rospy.get_param("update_robot_pose/max_linear_vel_x")
-    max_angular_vel_z = rospy.get_param("update_robot_pose/max_angular_vel")
+    max_angular_vel_z = rospy.get_param("update_robot_pose/max_angular_vel_z")
 
     rospy.init_node('posePublisher', anonymous=True)
 
