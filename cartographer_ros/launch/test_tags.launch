@@ -1,7 +1,0 @@
-<launch>
-
-  <node pkg="cartographer_ros" name="update_robot_pose" type="update_robot_pose.py" output="screen">
-    <rosparam command="load" file="$(find cartographer_ros)/config/tag_locations.yaml" />
-  </node>
-
-</launch>
