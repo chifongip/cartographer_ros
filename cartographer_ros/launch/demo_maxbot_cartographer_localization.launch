@@ -17,24 +17,25 @@
 <launch>
   <param name="/use_sim_time" value="false" />
 
-  <param name="robot_description"
+  <!-- <param name="robot_description"
     textfile="$(find cartographer_ros)/urdf/maxbot_2d.urdf" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
-    type="robot_state_publisher" />
+    type="robot_state_publisher" /> -->
 
   <node pkg="cartographer_ros" name="imu_convert" type="imu_convert.py" output="screen" />
 
-  <node pkg="cartographer_ros" name="apriltag_landmark" type="apriltag_landmark.py" output="screen" />
+  <!-- <node pkg="cartographer_ros" name="apriltag_landmark" type="apriltag_landmark.py" output="screen" /> -->
 
   <node name="cartographer_node" pkg="cartographer_ros"
       type="cartographer_node" args="
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename maxbot_2d_localization.lua
-          -load_state_filename /home/ubuntu/mymap.pbstream"
+          -load_state_filename /home/ubuntu/maxbot/ros_ws/src/maxbot_navigation/maps/mymap.pbstream"
       output="screen">
     <remap from="imu" to="imu" />
     <remap from="scan" to="scan" />
+    <remap from="odom" to="odom" />
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"

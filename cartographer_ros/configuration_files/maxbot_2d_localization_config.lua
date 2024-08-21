@@ -54,19 +54,25 @@ TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 -- TRAJECTORY_BUILDER_2D.use_multi_resolution_ceres_scan_matching = false
 -- TRAJECTORY_BUILDER_2D.use_accurate_imu = false
 
-POSE_GRAPH.optimize_every_n_nodes = 50 -- 35
+POSE_GRAPH.optimize_every_n_nodes = 20 -- 35
 -- POSE_GRAPH.revert_scan = false
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.65 -- 0.66
 POSE_GRAPH.global_constraint_search_after_n_seconds = 120.
-POSE_GRAPH.constraint_builder.min_score = 0.55 -- 0.65
+POSE_GRAPH.constraint_builder.min_score = 0.60 -- 0.65
 POSE_GRAPH.constraint_builder.log_matches = false
 POSE_GRAPH.constraint_builder.max_constraint_distance = 15 
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.linear_search_window = 5
+POSE_GRAPH.constraint_builder.fast_correlative_scan_matcher.angular_search_window = math.rad(30.)
+-- POSE_GRAPH.constraint_builder.global_localization_min_score_in_elevator = 0.65 --判定电梯内重定位成功最小得分
+-- POSE_GRAPH.constraint_builder.matches_well_score_in_elevator = 0.75 --电梯内重定位匹配得分较好阈值
+-- POSE_GRAPH.match_score_elevator_rectangle = 0.67 --判定电梯框匹配成功得分阈值
+
 
 TRAJECTORY_BUILDER_2D.motion_filter.max_angle_radians = math.rad(5.)
-TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 20 -- 1
-TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 20 -- 10
-TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 10 -- 40
-TRAJECTORY_BUILDER_2D.submaps.grid_options_2d.resolution = 0.1
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.occupied_space_weight = 5 -- 1
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.translation_weight = 30 -- 10
+TRAJECTORY_BUILDER_2D.ceres_scan_matcher.rotation_weight = 1 -- 40
 
+-- POSE_GRAPH.elevator_dis = -1.5
 
 return options
