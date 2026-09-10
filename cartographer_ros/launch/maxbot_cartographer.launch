@@ -21,7 +21,7 @@
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" /> -->
 
-  <node pkg="cartographer_ros" name="imu_convert" type="imu_convert.py" output="screen" />
+  <!-- <node pkg="cartographer_ros" name="imu_convert" type="imu_convert.py" output="screen" /> -->
 
   <!-- <node pkg="cartographer_ros" name="apriltag_landmark" type="apriltag_landmark.py" output="screen" /> -->
 
@@ -30,7 +30,7 @@
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename maxbot_2d.lua"
       output="screen">
-    <remap from="imu" to="imu" />
+    <remap from="imu" to="imu/data" />
     <remap from="scan" to="scan" />
     <remap from="odom" to="odom" />
   </node>
